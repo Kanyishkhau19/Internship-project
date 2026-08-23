@@ -16,9 +16,10 @@ columns into model inputs" is defined.
 
 import pandas as pd
 import numpy as np
+from pathlib import Path
 
-# Path to the raw dataset (relative to project root)
-DATA_PATH = "data/SkyCity Auckland Restaurants & Bars.csv"
+BASE_DIR = Path(__file__).resolve().parent
+DATA_PATH = BASE_DIR / "data" / "SkyCity Auckland Restaurants & Bars.csv"
 
 # Columns that are IDENTIFIERS ONLY. They do not describe restaurant
 # performance, so they should never be fed to the model as predictive
