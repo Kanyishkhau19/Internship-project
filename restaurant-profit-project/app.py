@@ -15,8 +15,10 @@ Run with:
 
 NOTE: run `python train_model.py` first, so that model.pkl exists.
 """
-
+from pathlib import Path
 import json
+import joblib
+
 import itertools
 
 import numpy as np
@@ -24,7 +26,6 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 import streamlit as st
-import joblib
 
 from ml_utils import get_model_ready_data, ALL_FEATURES, CATEGORICAL_FEATURES
 
@@ -45,14 +46,19 @@ def load_data():
     df, X, y = get_model_ready_data()
     return df
 
+BASE_DIR = Path(__file__).resolve().parent
 
 @st.cache_resource
 def load_model():
-    model = joblib.load("model.pkl")
-    with open("model_metadata.json") as f:
-        metadata = json.load(f)
-    return model, metadata
+    model_path = BASE_DIR / "model.pkl"
+    metadata_path = BASE_DIR / "model_metadata.json"
 
+    model = joblib.load(model_path)
+
+    with open(metadata_path, "r") as f:
+        metadata = json.load(f)
+
+    return model, metadata
 
 df = load_data()
 model, metadata = load_model()
